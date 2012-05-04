@@ -8,7 +8,6 @@
     <properties>
         <targetJdk>1.6</targetJdk>
         <gmaven.version>1.3</gmaven.version>
-        <p4.branchName>__MAIN__</p4.branchName>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
