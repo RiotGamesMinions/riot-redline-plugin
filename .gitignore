@@ -1,0 +1,10 @@
+# Mac
+.DS_Store
+
+# IDE Related
+.idea
+*.iml
+atlassian-ide-plugin.xml
+
+# Java Related
+target/
