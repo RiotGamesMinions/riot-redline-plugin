@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.riotgames</groupId>
+    <artifactId>create-an-rpm</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <redline.group>Applications/System</redline.group>
+        <redline.vendor>Riot Games</redline.vendor>
+        <redline.license>COMMERCIAL</redline.license>
+        <redline.url>www.riotgames.com</redline.url>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>@project.groupId@</groupId>
+                <artifactId>@project.artifactId@</artifactId>
+                <version>@project.version@</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packaging>
+                        <name>create-an-rpm</name>
+                        <version>${project.version}</version>
+                        <release>${maven.build.timestamp}</release>
+                    </packaging>
+                    <summary>Create an RPM</summary>
+                    <mappings>
+                        <mapping>
+                            <directory>/files</directory>
+                            <sources>
+                                <source>${project.basedir}/pom.xml</source>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                    <platform>
+                        <architecture>noarch</architecture>
+                        <os>linux</os>
+                    </platform>
+                    <group>${redline.group}</group>
+                    <vendor>${redline.vendor}</vendor>
+                    <license>${redline.license}</license>
+                    <url>${redline.url}</url>
+                    <destination>${project.basedir}/target</destination>
+                    <attach>true</attach>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
