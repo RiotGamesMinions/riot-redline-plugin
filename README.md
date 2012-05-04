@@ -24,10 +24,16 @@ Example Usage
 			<architecture>noarch</architecture>
 			<os>linux</os>
 		</platform>
+		<packaing>
+			<name>my-rpm-name</name>
+            <version>1.0</version>
+            <release>${maven.build.timestamp}</release>
+		</packaging>
 		<group>Applications/System</group>
 		<vendor>My Company</vendor>
 		<license>COMMERCIAL</license>
 		<url>www.riotgames.com</url>
+		<summary>A summary of my RPM.</summary>
 		<destination>${project.basedir}/target</destination>
 		<attach>true</attach>
 	</configuration>
