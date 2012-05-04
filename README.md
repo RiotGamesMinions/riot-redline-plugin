@@ -24,7 +24,7 @@ Example Usage
 			<architecture>noarch</architecture>
 			<os>linux</os>
 		</platform>
-		<packaing>
+		<packaging>
 			<name>my-rpm-name</name>
             <version>1.0</version>
             <release>${maven.build.timestamp}</release>
