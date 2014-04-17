@@ -91,6 +91,11 @@ class RedlineMojo extends GroovyMojo {
     def List mappings
 
     /**
+     * @parameter
+     */
+    def List rpmDependencies
+
+    /**
      * Determines if this rpm shall be attached to the Maven install and deploy phases
      *
      * @parameter
@@ -136,12 +141,17 @@ class RedlineMojo extends GroovyMojo {
         def sourcePackage = "${packaging.name}-$parsedVersion-${packaging.release}.src.rpm"
         builder.setPackage(packaging.name, parsedVersion, packaging.release)
         builder.addHeaderEntry(Header.HeaderTag.SOURCERPM, sourcePackage)
+
+
         if(postInstallScript != null)
             builder.setPostInstallScript(new File(postInstallScript))
 
         //Parse the mappings
         parseMappings(builder)
 
+		//Parse the RPM dependencies
+		parseRpmDependencies(builder)
+		
         //Make sure the destination exists and build the rpm
         def rpmDestination = new File(destination)
         rpmDestination.mkdir()
@@ -241,4 +251,19 @@ class RedlineMojo extends GroovyMojo {
             }
         }
     }
+
+	/**
+	 * Parses the rpmDependencies member to ... FIXME
+	 *
+	 * @param builder
+	 * @return
+	 */
+	def parseRpmDependencies(Builder builder) {
+		rpmDependencies.each {rpmDependency ->
+			def name = rpmDependency.name
+			def version = rpmDependency.version
+			builder.addDependencyMore(name,version)
+		}
+	}
+	
 }
