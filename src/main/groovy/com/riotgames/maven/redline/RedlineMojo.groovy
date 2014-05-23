@@ -225,10 +225,12 @@ class RedlineMojo extends GroovyMojo {
         mapping.sources.each {source ->
             def sourceFile = new File(source)
             def absoluteRpmPath
+		    def sourceFileRoot		
             //If a directory was mapped, the entire contents of that tree will be added
             if (sourceFile.isDirectory()) {
+                sourceFileRoot = sourceFile.canonicalPath
                 sourceFile.eachFileRecurse(FileType.FILES, {file ->
-                    absoluteRpmPath = directoryInRpm + file.name
+                    absoluteRpmPath = directoryInRpm + file.canonicalPath.substring(sourceFileRoot.length()+1)
                     log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
                     builder.addFile(absoluteRpmPath, file)
                 })
