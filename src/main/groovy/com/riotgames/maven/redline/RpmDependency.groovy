@@ -2,21 +2,23 @@ package com.riotgames.maven.redline
 
 class RpmDependency {
 
-	/**
-	 * The name ... FIXME
-	 */
-	def String name
+    /**
+     * The package name of the RPM package that this package depends on
+     * (see: RPMTAG_REQUIRENAME)
+     */
+    def String name
 
-	/**
-	 * The name ... FIXME
-	 */
-	def String version
+    /**
+     * The version string of the RPM package this this package depends on
+     * (see: RPMTAG_REQUIREVERSION)
+     */
+    def String version
 
-	@Override
-	def String toString() {
-		"""
-        Directory: $directory
-        Sources: $sources
+    @Override
+    def String toString() {
         """
-	}
+        Dependent RPM package name: $name
+        Dependent RPM package version: $version
+        """
+    }
 }

@@ -149,9 +149,9 @@ class RedlineMojo extends GroovyMojo {
         //Parse the mappings
         parseMappings(builder)
 
-		//Parse the RPM dependencies
-		parseRpmDependencies(builder)
-		
+        //Parse the RPM dependencies
+        parseRpmDependencies(builder)
+
         //Make sure the destination exists and build the rpm
         def rpmDestination = new File(destination)
         rpmDestination.mkdir()
@@ -252,18 +252,18 @@ class RedlineMojo extends GroovyMojo {
         }
     }
 
-	/**
-	 * Parses the rpmDependencies member to ... FIXME
-	 *
-	 * @param builder
-	 * @return
-	 */
-	def parseRpmDependencies(Builder builder) {
-		rpmDependencies.each {rpmDependency ->
-			def name = rpmDependency.name
-			def version = rpmDependency.version
-			builder.addDependencyMore(name,version)
-		}
-	}
-	
+    /**
+     * Parses the rpmDependencies member and add any declared dependencies to other RPM packages to the builder parameter.
+     *
+     * @param builder
+     * @return
+     */
+    def parseRpmDependencies(Builder builder) {
+        rpmDependencies.each {rpmDependency ->
+            def name = rpmDependency.name
+            def version = rpmDependency.version
+            builder.addDependencyMore(name,version)
+        }
+    }
+
 }
