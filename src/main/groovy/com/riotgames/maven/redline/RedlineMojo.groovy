@@ -152,13 +152,13 @@ class RedlineMojo extends GroovyMojo {
 
         //if RPM signing is configured, setup the necessary parameters in the builder
         if(signature) {
-            builder.setPrivateKeyRingFile(signature.privateKeyRing)
+            builder.setPrivateKeyRingFile(new File(signature.privateKeyRing))
             if(signature.privateKeyId) {
                 builder.setPrivateKeyId(signature.privateKeyId)
             }
             builder.setPrivateKeyPassphrase(signature.privateKeyPassphrase)
         }
-            
+
         //Parse the mappings
         parseMappings(builder)
 
