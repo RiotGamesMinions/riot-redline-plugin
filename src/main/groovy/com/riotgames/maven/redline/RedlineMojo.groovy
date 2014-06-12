@@ -102,6 +102,11 @@ class RedlineMojo extends GroovyMojo {
     def List mappings
 
     /**
+     * @parameter
+     */
+    def List rpmDependencies
+
+    /**
      * Determines if this rpm shall be attached to the Maven install and deploy phases
      *
      * @parameter
@@ -147,6 +152,8 @@ class RedlineMojo extends GroovyMojo {
         def sourcePackage = "${packaging.name}-$parsedVersion-${packaging.release}.src.rpm"
         builder.setPackage(packaging.name, parsedVersion, packaging.release)
         builder.addHeaderEntry(Header.HeaderTag.SOURCERPM, sourcePackage)
+
+
         if(postInstallScript != null)
             builder.setPostInstallScript(new File(postInstallScript))
 
@@ -161,6 +168,9 @@ class RedlineMojo extends GroovyMojo {
 
         //Parse the mappings
         parseMappings(builder)
+
+        //Parse the RPM dependencies
+        parseRpmDependencies(builder)
 
         //Make sure the destination exists and build the rpm
         def rpmDestination = new File(destination)
@@ -245,10 +255,12 @@ class RedlineMojo extends GroovyMojo {
         mapping.sources.each {source ->
             def sourceFile = new File(source)
             def absoluteRpmPath
+		    def sourceFileRoot		
             //If a directory was mapped, the entire contents of that tree will be added
             if (sourceFile.isDirectory()) {
+                sourceFileRoot = sourceFile.canonicalPath
                 sourceFile.eachFileRecurse(FileType.FILES, {file ->
-                    absoluteRpmPath = directoryInRpm + file.name
+                    absoluteRpmPath = directoryInRpm + file.canonicalPath.substring(sourceFileRoot.length()+1)
                     log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
                     builder.addFile(absoluteRpmPath, file)
                 })
@@ -261,4 +273,19 @@ class RedlineMojo extends GroovyMojo {
             }
         }
     }
+
+    /**
+     * Parses the rpmDependencies member and add any declared dependencies to other RPM packages to the builder parameter.
+     *
+     * @param builder
+     * @return
+     */
+    def parseRpmDependencies(Builder builder) {
+        rpmDependencies.each {rpmDependency ->
+            def name = rpmDependency.name
+            def version = rpmDependency.version
+            builder.addDependencyMore(name,version)
+        }
+    }
+
 }
