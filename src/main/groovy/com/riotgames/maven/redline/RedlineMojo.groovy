@@ -54,6 +54,17 @@ class RedlineMojo extends GroovyMojo {
     def String summary
 
     /**
+     * The PGP/GPG signature of the rpm
+     * 
+     * If the private key information will be provided,
+     * the RPM will be signed.
+     * If not, it will just remain unsigned.
+     *
+     * @parameter
+     */
+    def Signature signature
+
+    /**
      * The url of the rpm
      *
      * @parameter
@@ -145,6 +156,15 @@ class RedlineMojo extends GroovyMojo {
 
         if(postInstallScript != null)
             builder.setPostInstallScript(new File(postInstallScript))
+
+        //if RPM signing is configured, setup the necessary parameters in the builder
+        if(signature) {
+            builder.setPrivateKeyRingFile(new File(signature.privateKeyRing))
+            if(signature.privateKeyId) {
+                builder.setPrivateKeyId(signature.privateKeyId)
+            }
+            builder.setPrivateKeyPassphrase(signature.privateKeyPassphrase)
+        }
 
         //Parse the mappings
         parseMappings(builder)
