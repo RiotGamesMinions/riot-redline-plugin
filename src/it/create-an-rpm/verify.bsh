@@ -1,0 +1,15 @@
+import com.riotgames.maven.redline.integrationtest.FindRpmFile;
+import com.riotgames.maven.redline.integrationtest.RpmInformation;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.Is;
+import org.junit.Assert;
+
+File targetDir = new File(basedir, "target");
+Assert.assertThat(targetDir.exists(), Is.is(true));
+Assert.assertThat(targetDir.isDirectory(), Is.is(true));
+List rpms = new FindRpmFile().findInFolder(targetDir);
+Assert.assertThat("Only 1 RPM should be created.", rpms.size(), Is.is(1));
+
+String[] fileModes = new RpmInformation(rpms.get(0)).fileModes();
+String [] expectedFileModes = new String[] { "16457", "33279" };
+Assert.assertThat(fileModes, Is.is(Matchers.arrayContaining(expectedFileModes)));

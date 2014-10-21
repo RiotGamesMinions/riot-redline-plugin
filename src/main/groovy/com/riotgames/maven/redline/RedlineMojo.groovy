@@ -2,10 +2,10 @@ package com.riotgames.maven.redline
 
 import groovy.io.FileType
 import org.codehaus.gmaven.mojo.GroovyMojo
-import org.freecompany.redline.Builder
-import org.freecompany.redline.header.Architecture
-import org.freecompany.redline.header.Header
-import org.freecompany.redline.header.Os
+import org.redline_rpm.Builder
+import org.redline_rpm.header.Architecture
+import org.redline_rpm.header.Header
+import org.redline_rpm.header.Os
 import org.apache.maven.project.MavenProjectHelper
 import org.apache.maven.project.MavenProject
 import org.apache.maven.artifact.Artifact
@@ -262,14 +262,14 @@ class RedlineMojo extends GroovyMojo {
                 sourceFile.eachFileRecurse(FileType.FILES, {file ->
                     absoluteRpmPath = directoryInRpm + file.canonicalPath.substring(sourceFileRoot.length()+1)
                     log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
-                    builder.addFile(absoluteRpmPath, file)
+                    builder.addFile(absoluteRpmPath, file, mapping.filemode, mapping.dirmode, mapping.username, mapping.groupname)
                 })
             }
             //else, only a single file was mapped
             else {
                 absoluteRpmPath = directoryInRpm + sourceFile.name
                 log.info("Adding file $sourceFile to rpm at path $absoluteRpmPath")
-                builder.addFile(absoluteRpmPath, sourceFile)
+                builder.addFile(absoluteRpmPath, sourceFile, mapping.filemode, mapping.dirmode, mapping.username, mapping.groupname)
             }
         }
     }

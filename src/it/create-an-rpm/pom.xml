@@ -9,6 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
         <redline.group>Applications/System</redline.group>
         <redline.vendor>Riot Games</redline.vendor>
         <redline.license>COMMERCIAL</redline.license>
@@ -21,6 +22,12 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redline-rpm</groupId>
+            <artifactId>redline</artifactId>
+            <version>1.1.17-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -47,6 +54,10 @@
                     <mappings>
                         <mapping>
                             <directory>/files</directory>
+                            <username>testuser</username>
+                            <groupname>testgroup</groupname>
+                            <filemode>0777</filemode>
+                            <dirmode>0111</dirmode>
                             <sources>
                                 <source>${project.basedir}/pom.xml</source>
                             </sources>
@@ -61,7 +72,7 @@
                     <license>${redline.license}</license>
                     <url>${redline.url}</url>
                     <destination>${project.basedir}/target</destination>
-                    <attach>true</attach>
+                    <attach>false</attach>
                 </configuration>
             </plugin>
         </plugins>
