@@ -16,27 +16,57 @@ Example Usage
 
 ```xml
 <plugin>
-	<groupId>com.riotgames.maven</groupId>
-	<artifactId>riot-redline-plugin</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
-	<configuration>
-		<platform>
-			<architecture>noarch</architecture>
-			<os>linux</os>
-		</platform>
-		<packaging>
-			<name>my-rpm-name</name>
+    <groupId>com.riotgames.maven</groupId>
+    <artifactId>riot-redline-plugin</artifactId>
+    <version>1.2.1-SNAPSHOT</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>rpm</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <packaging>
+            <name>my-rpm</name>
             <version>1.0</version>
             <release>${maven.build.timestamp}</release>
-		</packaging>
-		<group>Applications/System</group>
-		<vendor>My Company</vendor>
-		<license>COMMERCIAL</license>
-		<url>www.riotgames.com</url>
-		<summary>A summary of my RPM.</summary>
-		<destination>${project.basedir}/target</destination>
-		<attach>true</attach>
-	</configuration>
+        </packaging>
+        <platform>
+           <architecture>noarch</architecture>
+           <os>linux</os>
+        </platform>
+        <group>Applications/System</group>
+        <vendor>My Company</vendor>
+        <license>COMMERCIAL</license>
+        <url>www.riotgames.com</url>
+        <summary>This RPM installs my program.</summary>
+        <postInstallScript>${project.basedir}/src/main/rpm/postInstall.sh</postInstallScript>
+        <destination>${project.basedir}/target</destination>
+        <attach>true</attach>
+        <mappings>
+            <mapping>
+                <directory>/opt/tomcat/webapps</directory>
+                <filemode>0744</filemode>
+                <dirmode>0755</dirmode>
+                <username>user</username>
+                <groupname>group</groupname>
+                <sources>
+                    <source>${project.basedir}/target/someFile.txt</source>
+                </sources>
+            </mapping>
+            <mapping>
+                <directory>/opt/util/dependencies</directory>
+                <filemode>0644</filemode>
+                <dirmode>0755</dirmode>
+                <username>user</username>
+                <groupname>group</groupname>
+                <sources>
+                    <source>${project.basedir}/target/dependency</source>
+                </sources>
+            </mapping>
+        </mappings>
+    </configuration>
 </plugin>
 ```
 
