@@ -16,6 +16,11 @@ class Mapping {
     def int filemode
 
     def int dirmode
+	
+	def boolean config
+	
+	def boolean noreplace
+	
 
     /**
      * A List of source files that will be installed into the rpm
@@ -27,6 +32,8 @@ class Mapping {
         this.groupname = CpioHeader.DEFAULT_GROUP
         this.filemode = CpioHeader.DEFAULT_FILE_PERMISSION
         this.dirmode = CpioHeader.DEFAULT_DIRECTORY_PERMISSION
+		this.config = false;
+		this.noreplace = false;
     }
 
     @Override
