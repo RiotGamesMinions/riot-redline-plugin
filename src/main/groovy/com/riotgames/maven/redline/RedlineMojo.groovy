@@ -256,21 +256,21 @@ class RedlineMojo extends GroovyMojo {
         mapping.sources.each {source ->
             def sourceFile = new File(source)
             def absoluteRpmPath
-		    def sourceFileRoot
-			
-			// parse RPM file directives
-			// only %config and %noreplace are implemented for now
-			// see http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html 
-			// for a full list of directives
-			// see http://www.rpm.org/max-rpm/s1-rpm-inside-files-list-directives.html
-			
-			Directive directive = new Directive()
-			if (mapping.config) {
-				directive.set(Directive.CONFIG)
-			}
-			if (mapping.noreplace) {
-				directive.set(Directive.NOREPLACE)
-			}
+            def sourceFileRoot
+
+            // parse RPM file directives
+            // only %config and %noreplace are implemented for now
+            // see http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html
+            // for a full list of directives
+            // see http://www.rpm.org/max-rpm/s1-rpm-inside-files-list-directives.html
+
+            Directive rpmDirective = null
+            if (mapping.config) {
+                rpmDirective = Directive.CONFIG
+            }
+            if (mapping.noreplace) {
+                rpmDirective = Directive.NOREPLACE
+            }
 
             //If a directory was mapped, the entire contents of that tree will be added
             if (sourceFile.isDirectory()) {
@@ -278,14 +278,14 @@ class RedlineMojo extends GroovyMojo {
                 sourceFile.eachFileRecurse(FileType.FILES, {file ->
                     absoluteRpmPath = directoryInRpm + file.canonicalPath.substring(sourceFileRoot.length()+1)
                     log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
-                    builder.addFile(absoluteRpmPath, file, mapping.filemode, directive, mapping.dirmode, mapping.username, mapping.groupname)
+                    builder.addFile(absoluteRpmPath, file, mapping.filemode, mapping.dirmode, rpmDirective, mapping.username, mapping.groupname)
                 })
             }
             //else, only a single file was mapped
             else {
                 absoluteRpmPath = directoryInRpm + sourceFile.name
                 log.info("Adding file $sourceFile to rpm at path $absoluteRpmPath")
-                builder.addFile(absoluteRpmPath, sourceFile, mapping.filemode, directive, mapping.dirmode, mapping.username, mapping.groupname)
+                builder.addFile(absoluteRpmPath, sourceFile, mapping.filemode, mapping.dirmode, rpmDirective, mapping.username, mapping.groupname)
             }
         }
     }
