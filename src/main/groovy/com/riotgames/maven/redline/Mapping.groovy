@@ -16,11 +16,11 @@ class Mapping {
     def int filemode
 
     def int dirmode
-	
-	def boolean config
-	
-	def boolean noreplace
-	
+
+    def boolean config
+
+    def boolean noreplace
+
 
     /**
      * A List of source files that will be installed into the rpm
