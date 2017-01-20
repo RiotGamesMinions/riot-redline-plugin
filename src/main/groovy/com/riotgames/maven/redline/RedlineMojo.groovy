@@ -56,7 +56,7 @@ class RedlineMojo extends GroovyMojo {
 
     /**
      * The PGP/GPG signature of the rpm
-     * 
+     *
      * If the private key information will be provided,
      * the RPM will be signed.
      * If not, it will just remain unsigned.
@@ -113,7 +113,12 @@ class RedlineMojo extends GroovyMojo {
      * @parameter
      */
     def boolean attach
-
+    /**
+     * skip the logs
+     *
+     * @parameter
+     */
+    def boolean skipLogs
     /**
      * @parameter expression="${project}"
      * @required
@@ -277,14 +282,18 @@ class RedlineMojo extends GroovyMojo {
                 sourceFileRoot = sourceFile.canonicalPath
                 sourceFile.eachFileRecurse(FileType.FILES, {file ->
                     absoluteRpmPath = directoryInRpm + file.canonicalPath.substring(sourceFileRoot.length()+1)
-                    log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
+                    if(!skipLogs){
+                        log.info("Adding file ${file.absolutePath} to rpm at path $absoluteRpmPath")
+                    }
                     builder.addFile(absoluteRpmPath, file, mapping.filemode, mapping.dirmode, rpmDirective, mapping.username, mapping.groupname)
                 })
             }
             //else, only a single file was mapped
             else {
                 absoluteRpmPath = directoryInRpm + sourceFile.name
-                log.info("Adding file $sourceFile to rpm at path $absoluteRpmPath")
+                if(!skipLogs){
+                    log.info("Adding file $sourceFile to rpm at path $absoluteRpmPath")
+                    }
                 builder.addFile(absoluteRpmPath, sourceFile, mapping.filemode, mapping.dirmode, rpmDirective, mapping.username, mapping.groupname)
             }
         }
